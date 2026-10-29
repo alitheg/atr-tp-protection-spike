@@ -1,0 +1,13 @@
+name: caller
+on:
+  workflow_dispatch:
+    inputs:
+      build_ref:
+        description: "Ref to build (attacker-controlled, never appears in OIDC claims)"
+        default: "hotfix/evil"
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  call:
+    uses: alitheg/atr-tp-protection-spike/.github/workflows/reusable.yml@hotfix/evil

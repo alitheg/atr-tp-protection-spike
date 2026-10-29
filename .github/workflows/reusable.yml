@@ -1,0 +1,15 @@
+name: reusable
+on:
+  workflow_call:
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  claims:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          token=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=atr-spike" | jq -r .value)
+          payload=$(printf '%s' "$token" | cut -d. -f2 | tr '_-' '/+')
+          while [ $(( ${#payload} % 4 )) -ne 0 ]; do payload="$payload="; done
+          printf '%s' "$payload" | base64 -d | jq -c '{ref, sha: .sha[0:7], event_name, workflow_ref, workflow_sha: .workflow_sha[0:7], job_workflow_ref, job_workflow_sha: .job_workflow_sha[0:7]}'
