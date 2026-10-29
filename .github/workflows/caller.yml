@@ -10,4 +10,4 @@ permissions:
   contents: read
 jobs:
   call:
-    uses: alitheg/atr-tp-protection-spike/.github/workflows/reusable.yml@hotfix/evil
+    uses: alitheg/atr-tp-protection-spike/.github/workflows/reusable.yml@scratch/evil
